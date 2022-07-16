@@ -8,7 +8,7 @@ class FileFinder(tkinter.Tk):
         super(FileFinder, self).__init__()
         global root
         self.parent = parent
-        self.W,self.H = 665,680
+        self.W,self.H = 665,480
         self.fileType = ""
         self.startDir = ""
         self.load = tkinter.BooleanVar(self, False)
@@ -32,6 +32,7 @@ class FileFinder(tkinter.Tk):
         self.date = date.strftime("%Y")
         
         w.Window(self)
+        self.title(''.join(["DCM Deep Search Tool v", f.Version[4:f.Version.__len__()]]))
 
     def setLoad(self):
         if f.path.isfile(f.settings_dir + "Settings.ini"):

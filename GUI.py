@@ -1,13 +1,13 @@
 from tkinter import *
 from tkinter import ttk
 from Functions import Version, saveSettings
+from variable import icon
 import tkinter
-
 
 def Window(self):
     
-    # photo = tkinter.PhotoImage(data=icon)
-    # self.wm_iconphoto(False, photo)
+    photo = tkinter.PhotoImage(data=icon)
+    self.wm_iconphoto(False, photo)
 
     menubar = Menu(self, activebackground='white', activeforeground='black')
     self.file = Menu(menubar, tearoff=0)

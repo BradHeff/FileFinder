@@ -1,5 +1,5 @@
 import sys, json, configparser, pythoncom
-from os import path, mkdir
+from os import path, mkdir, walk
 from pathlib import Path
 from configparser import ExtendedInterpolation
 
@@ -12,6 +12,30 @@ else:
     exe_dir = str(Path(__file__).parents[0])
 
 settings_dir = ''.join([exe_dir, '\Settings\\'])
+
+def SearchFile(self, filename):
+    pythoncom.CoInitialize()
+    data = dict()
+    count = 0
+    self.progressbar['mode'] = 'indeterminate'
+    print(path.abspath('.').split(path.sep)[0]+path.sep)
+    for root,dirs,file in walk(path.abspath('.').split(path.sep)[0]+path.sep):
+        if str(filename) in root:
+            print(root)
+            print(dirs)
+            print(file)
+            count += 1
+            data[count] = {'filename': file, 'path':root}
+    
+    self.progressbar['mode'] = 'determinate'
+    self.progressbar['maximum'] = count
+    count = 0
+    for i in data:
+        count+=1
+        self.progressbar['value'] = count
+        self.tree.insert('', 'end', values=(data[count]['filename'], data[count]['path']))
+    self.progressbar['value'] = 0
+    
 
 def getSettings(self):
     self.parser = configparser.RawConfigParser(interpolation=ExtendedInterpolation(),

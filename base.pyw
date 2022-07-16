@@ -1,4 +1,5 @@
 import datetime
+from threading import Thread
 import tkinter
 import Functions as f
 import GUI as w
@@ -8,9 +9,13 @@ class FileFinder(tkinter.Tk):
         super(FileFinder, self).__init__()
         global root
         self.parent = parent
-        self.W,self.H = 665,480
+        self.W,self.H = 665,280
+
+        self.selItem = []
+
         self.fileType = ""
         self.startDir = ""
+        
         self.load = tkinter.BooleanVar(self, False)
 
         if not f.path.exists(f.settings_dir):
@@ -33,6 +38,17 @@ class FileFinder(tkinter.Tk):
         
         w.Window(self)
         self.title(''.join(["DCM Deep Search Tool v", f.Version[4:f.Version.__len__()]]))
+
+    def SearchFile(self):
+        if not self.search.get().__len__() <= 0:
+            self.tree.delete(*self.tree.get_children())
+            t = Thread(None, target=f.SearchFile, args=(self, self.search.get()))
+            t.daemon = True
+            t.start()
+
+    def selectItem(self, widget):
+        curItem = self.tree.focus()
+        self.selItem = self.tree.item(curItem)['values']
 
     def setLoad(self):
         if f.path.isfile(f.settings_dir + "Settings.ini"):

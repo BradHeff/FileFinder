@@ -2,6 +2,7 @@ import sys, json, configparser, pythoncom
 from os import path, mkdir, walk
 from pathlib import Path
 from configparser import ExtendedInterpolation
+from tkinter import NORMAL
 
 DEBUG=True
 Version="v1.0.0.1"
@@ -18,14 +19,11 @@ def SearchFile(self, filename):
     data = dict()
     count = 0
     self.progressbar['mode'] = 'indeterminate'
-    print(path.abspath('.').split(path.sep)[0]+path.sep)
-    for root,dirs,file in walk(path.abspath('.').split(path.sep)[0]+path.sep):
-        if str(filename) in root:
-            print(root)
-            print(dirs)
-            print(file)
-            count += 1
-            data[count] = {'filename': file, 'path':root}
+    for root,dirs,files in walk(path.abspath('.').split(path.sep)[0]+path.sep):
+        for name in files:
+            if filename in name:
+                count += 1
+                data[count] = {'filename': name, 'path':root}
     
     self.progressbar['mode'] = 'determinate'
     self.progressbar['maximum'] = count
@@ -35,6 +33,8 @@ def SearchFile(self, filename):
         self.progressbar['value'] = count
         self.tree.insert('', 'end', values=(data[count]['filename'], data[count]['path']))
     self.progressbar['value'] = 0
+    self.search_btn['state'] = NORMAL
+    self.search['state'] = NORMAL
     
 
 def getSettings(self):

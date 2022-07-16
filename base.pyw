@@ -1,4 +1,5 @@
 import datetime
+import subprocess
 from threading import Thread
 import tkinter
 import Functions as f
@@ -42,6 +43,8 @@ class FileFinder(tkinter.Tk):
     def SearchFile(self):
         if not self.search.get().__len__() <= 0:
             self.tree.delete(*self.tree.get_children())
+            self.search_btn['state'] = tkinter.DISABLED
+            self.search['state'] = tkinter.DISABLED
             t = Thread(None, target=f.SearchFile, args=(self, self.search.get()))
             t.daemon = True
             t.start()
@@ -49,6 +52,7 @@ class FileFinder(tkinter.Tk):
     def selectItem(self, widget):
         curItem = self.tree.focus()
         self.selItem = self.tree.item(curItem)['values']
+        subprocess.call(args=("explorer.exe",self.selItem[1]))
 
     def setLoad(self):
         if f.path.isfile(f.settings_dir + "Settings.ini"):

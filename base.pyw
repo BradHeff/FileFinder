@@ -2,6 +2,7 @@ import datetime
 import subprocess
 from threading import Thread
 import tkinter
+from tkinter import font
 import Functions as f
 import GUI as w
     
@@ -17,6 +18,8 @@ class FileFinder(tkinter.Tk):
         self.fileType = ""
         self.startDir = ""
         
+        self.font = font.Font(family='Arial', size=10, weight='bold', underline = False)
+
         self.load = tkinter.BooleanVar(self, False)
 
         if not f.path.exists(f.settings_dir):
@@ -30,7 +33,7 @@ class FileFinder(tkinter.Tk):
         center_x = int(screen_width/2 - self.W / 2)
         center_y = int(screen_height/2 - self.H / 2)
         self.geometry(f'{self.W}x{self.H}+{center_x}+{center_y}')
-        self.resizable(0, 0)
+        # self.resizable(0, 0)
         self.attributes("-fullscreen",False)
         
         currentDateTime = datetime.datetime.now()
@@ -45,6 +48,8 @@ class FileFinder(tkinter.Tk):
             self.tree.delete(*self.tree.get_children())
             self.search_btn['state'] = tkinter.DISABLED
             self.search['state'] = tkinter.DISABLED
+            self.progressbar['mode'] = 'indeterminate'
+            self.progressbar.start()
             t = Thread(None, target=f.SearchFile, args=(self, self.search.get()))
             t.daemon = True
             t.start()

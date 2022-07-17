@@ -17,21 +17,16 @@ settings_dir = ''.join([exe_dir, '\Settings\\'])
 def SearchFile(self, filename):
     pythoncom.CoInitialize()
     data = dict()
-    count = 0
-    self.progressbar['mode'] = 'indeterminate'
+    count = 0    
     for root,dirs,files in walk(path.abspath('.').split(path.sep)[0]+path.sep):
         for name in files:
             if filename in name:
                 count += 1
                 data[count] = {'filename': name, 'path':root}
-    
-    self.progressbar['mode'] = 'determinate'
-    self.progressbar['maximum'] = count
+                self.tree.insert('', 0, values=(name, root))
     count = 0
-    for i in data:
-        count+=1
-        self.progressbar['value'] = count
-        self.tree.insert('', 'end', values=(data[count]['filename'], data[count]['path']))
+    self.progressbar.stop()
+    self.progressbar['mode'] = 'determinate'
     self.progressbar['value'] = 0
     self.search_btn['state'] = NORMAL
     self.search['state'] = NORMAL

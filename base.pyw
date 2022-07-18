@@ -45,12 +45,13 @@ class FileFinder(tkinter.Tk):
 
     def SearchFile(self):
         if not self.search.get().__len__() <= 0:
+            self.lbl_status['text'] = "Calculating..."
             self.tree.delete(*self.tree.get_children())
             self.search_btn['state'] = tkinter.DISABLED
             self.search['state'] = tkinter.DISABLED
             self.progressbar['mode'] = 'indeterminate'
             self.progressbar.start()
-            t = Thread(None, target=f.SearchFile, args=(self, self.search.get()))
+            t = Thread(target=f.SearchFile, args=(self, self.search.get()))
             t.daemon = True
             t.start()
 

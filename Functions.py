@@ -17,9 +17,10 @@ settings_dir = ''.join([exe_dir, '\Settings\\'])
 def SearchFile(self, filename):
     pythoncom.CoInitialize()
     data = dict()
-    count = 0    
+    count = 0
     for root,dirs,files in walk(path.abspath('.').split(path.sep)[0]+path.sep):
         for name in files:
+            self.lbl_status['text'] = name
             if filename in name:
                 count += 1
                 data[count] = {'filename': name, 'path':root}
@@ -30,6 +31,7 @@ def SearchFile(self, filename):
     self.progressbar['value'] = 0
     self.search_btn['state'] = NORMAL
     self.search['state'] = NORMAL
+    self.lbl_status['text'] = "Idle..."
     
 
 def getSettings(self):

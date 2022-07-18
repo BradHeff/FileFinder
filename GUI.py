@@ -55,5 +55,11 @@ def Window(self):
 
     self.tree.config(yscrollcommand=scrollbar.set)
 
+    lbl_stat = Label(self, text="Searching :")
+    lbl_stat.grid(sticky='we', column=0, row=3)
+    
+    self.lbl_status = Label(self, text="Idle...")
+    self.lbl_status.grid(sticky='w', column=1, columnspan=2, row=3, padx=10)
+
     self.progressbar = ttk.Progressbar(self, maximum=100, orient=HORIZONTAL)    
-    self.progressbar.grid(sticky='ews', columnspan=3)
+    self.progressbar.grid(sticky='ews', columnspan=3, row=4)
